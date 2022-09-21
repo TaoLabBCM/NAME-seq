@@ -1,0 +1,8 @@
+Building DAG of jobs...
+MissingInputException in line 62 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.paired:
+Missing input files for rule trimming2:
+    output: NAMEseq_output/trimmed_fastq/HPJP26-Input-native_R1_trimmed2.fastq, NAMEseq_output/trimmed_fastq/HPJP26-Input-native_R2_trimmed2.fastq
+    wildcards: sample=HPJP26-Input-native
+    affected files:
+        NAMEseq_output/trimmed_fastq/HPJP26-Input-native_R1_trimmed.fastq.gz
+        NAMEseq_output/trimmed_fastq/HPJP26-Input-native_R2_trimmed.fastq.gz
