@@ -13,30 +13,30 @@ Strand = ["fwd", "rev"]
 # ruleorder: dedupe>trimming>fastq_AT_convert>bowtie2_align>mapped_fastq_filtering>sam_to_original_pe>samtools_calmd>sam_tag_filtering>samtools_sort_index>igvtools
 rule all:
     input:
-        expand("NAMEseq_output/deduped_fastq/{sample}_{read}_dedupe.fastq.gz", sample=SAMPLES, read=Read),
-        expand("NAMEseq_output/trimmed_fastq/{sample}_{read}_trimmed.fastq.gz", sample=SAMPLES, read=Read),
-        expand("NAMEseq_output/trimmed_fastq/{sample}_{read}_trimmed2.fastq", sample=SAMPLES, read=Read),
-        expand("NAMEseq_output/converted_fastq/{sample}_{read}_AT_only.fastq", sample=SAMPLES, read=Read),
-        expand("NAMEseq_output/converted_sam/{sample}_AT_only.sam", sample=SAMPLES),
-        expand("NAMEseq_output/mapped_fastq/{sample}_{read}_mapped.fastq", sample=SAMPLES, read=Read),
-        expand("NAMEseq_output/original_sam/{sample}_original_reads_{strand}.sam", sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/original_sam/{sample}_original_reads_{strand}.sorted.bam", sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/original_sam/{sample}_original_reads_{strand}_baq.sam", sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam",sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/readcount/{sample}_original_reads_{strand}_baq_filtered.wig",sample=SAMPLES, strand=Strand),
-        expand("NAMEseq_output/preprocessed_data/{sample}.csv",sample=SAMPLES),
+        expand(OUTPUT_DIR + "deduped_fastq/{sample}_{read}_dedupe.fastq.gz", sample=SAMPLES, read=Read),
+        expand(OUTPUT_DIR + "trimmed_fastq/{sample}_{read}_trimmed.fastq.gz", sample=SAMPLES, read=Read),
+        expand(OUTPUT_DIR + "trimmed_fastq/{sample}_{read}_trimmed2.fastq", sample=SAMPLES, read=Read),
+        expand(OUTPUT_DIR + "converted_fastq/{sample}_{read}_AT_only.fastq", sample=SAMPLES, read=Read),
+        expand(OUTPUT_DIR + "converted_sam/{sample}_AT_only.sam", sample=SAMPLES),
+        expand(OUTPUT_DIR + "mapped_fastq/{sample}_{read}_mapped.fastq", sample=SAMPLES, read=Read),
+        expand(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sam", sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sorted.bam", sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}_baq.sam", sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam",sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "readcount/{sample}_original_reads_{strand}_baq_filtered.wig",sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "preprocessed_data/{sample}.csv",sample=SAMPLES),
 
 
 rule dedupe:
     input:
-        r1 = "demo_data/{sample}_R1.fastq.gz",
-        r2 = "demo_data/{sample}_R2.fastq.gz"
+        r1 = INPUT_DIR + "{sample}_R1.fastq.gz",
+        r2 = INPUT_DIR + "{sample}_R2.fastq.gz"
     output:
-        r1 = "NAMEseq_output/deduped_fastq/{sample}_R1_dedupe.fastq.gz",
-        r2 = "NAMEseq_output/deduped_fastq/{sample}_R2_dedupe.fastq.gz",
+        r1 = OUTPUT_DIR + "deduped_fastq/{sample}_R1_dedupe.fastq.gz",
+        r2 = OUTPUT_DIR + "deduped_fastq/{sample}_R2_dedupe.fastq.gz",
     log:
-        "NAMEseq_output/logs/dedupe/{sample}.log"
+        OUTPUT_DIR + "logs/dedupe/{sample}.log"
     shell:
         """
         echo {input.r1}
@@ -45,13 +45,13 @@ rule dedupe:
 
 rule trimming:
     input:
-        r1 = "NAMEseq_output/deduped_fastq/{sample}_R1_dedupe.fastq.gz",
-        r2 = "NAMEseq_output/deduped_fastq/{sample}_R2_dedupe.fastq.gz",
+        r1 = OUTPUT_DIR + "deduped_fastq/{sample}_R1_dedupe.fastq.gz",
+        r2 = OUTPUT_DIR + "deduped_fastq/{sample}_R2_dedupe.fastq.gz",
     output:
-        r1 = "NAMEseq_output/trimmed_fastq/{sample}_R1_trimmed.fastq.gz",
-        r2 = "NAMEseq_output/trimmed_fastq/{sample}_R2_trimmed.fastq.gz",
+        r1 = OUTPUT_DIR + "trimmed_fastq/{sample}_R1_trimmed.fastq.gz",
+        r2 = OUTPUT_DIR + "trimmed_fastq/{sample}_R2_trimmed.fastq.gz",
     log:
-        "NAMEseq_output/logs/cutadpt/{sample}.log"
+        OUTPUT_DIR + "logs/cutadpt/{sample}.log"
     params:
         TRIM_OPTS = "-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -m 20 -u 9 -U 9"
     threads:
@@ -63,15 +63,15 @@ rule trimming:
 
 rule trimming2:
     input:
-        r1 = "NAMEseq_output/trimmed_fastq/{sample}_R1_trimmed.fastq.gz",
-        r2 = "NAMEseq_output/trimmed_fastq/{sample}_R2_trimmed.fastq.gz",
+        r1 = OUTPUT_DIR + "trimmed_fastq/{sample}_R1_trimmed.fastq.gz",
+        r2 = OUTPUT_DIR + "trimmed_fastq/{sample}_R2_trimmed.fastq.gz",
     output:
-        r1 = "NAMEseq_output/trimmed_fastq/{sample}_R1_trimmed2.fastq",
-        r2 = "NAMEseq_output/trimmed_fastq/{sample}_R2_trimmed2.fastq",
+        r1 = OUTPUT_DIR + "trimmed_fastq/{sample}_R1_trimmed2.fastq",
+        r2 = OUTPUT_DIR + "trimmed_fastq/{sample}_R2_trimmed2.fastq",
     log:
-        "NAMEseq_output/logs/cutadpt2/{sample}.log"
+        OUTPUT_DIR + "logs/cutadpt2/{sample}.log"
     params:
-        TRIM_OPTS = "-m 10 -u -9 -U -9"
+        TRIM_OPTS = "-m 20 -u -9 -U -9"
     threads:
         NUM_THREADS
     shell:
@@ -81,9 +81,9 @@ rule trimming2:
 
 rule fastq_AT_convert:
     input:
-        "NAMEseq_output/trimmed_fastq/{sample}_{read}_trimmed2.fastq"
+        OUTPUT_DIR + "trimmed_fastq/{sample}_{read}_trimmed2.fastq"
     output:
-        "NAMEseq_output/converted_fastq/{sample}_{read}_AT_only.fastq"
+        OUTPUT_DIR + "converted_fastq/{sample}_{read}_AT_only.fastq"
     shell:
         """
         python scripts/fastq_to_AT_only.py {input} {output}
@@ -91,24 +91,24 @@ rule fastq_AT_convert:
 
 rule bowtie2_align:
     input:
-        r1 = "NAMEseq_output/converted_fastq/{sample}_R1_AT_only.fastq",
-        r2 = "NAMEseq_output/converted_fastq/{sample}_R2_AT_only.fastq",
+        r1 = OUTPUT_DIR + "converted_fastq/{sample}_R1_AT_only.fastq",
+        r2 = OUTPUT_DIR + "converted_fastq/{sample}_R2_AT_only.fastq",
     params:
         index = INDEX,
     output:
-        "NAMEseq_output/converted_sam/{sample}_AT_only.sam"
+        OUTPUT_DIR + "converted_sam/{sample}_AT_only.sam"
     log:
-        "NAMEseq_output/logs/bowtie/{sample}.log"
+        OUTPUT_DIR + "logs/bowtie/{sample}.log"
     threads: NUM_THREADS
     shell:
         "bowtie2 -x {params.index} -p {threads} -1 {input.r1} -2 {input.r2} -S {output} > {log} 2>&1"
 
 rule mapped_fastq_filtering:
     input:
-        sam = "NAMEseq_output/converted_sam/{sample}_AT_only.sam",
-        fastq = "NAMEseq_output/trimmed_fastq/{sample}_{read}_trimmed2.fastq"
+        sam = OUTPUT_DIR + "converted_sam/{sample}_AT_only.sam",
+        fastq = OUTPUT_DIR + "trimmed_fastq/{sample}_{read}_trimmed2.fastq"
     output:
-        fastq = "NAMEseq_output/mapped_fastq/{sample}_{read}_mapped.fastq",
+        fastq = OUTPUT_DIR + "mapped_fastq/{sample}_{read}_mapped.fastq",
         readid = 'NAMEseq_output/mapped_fastq/{sample}_{read}_mapped.readid'
     shell:
         """
@@ -118,23 +118,23 @@ rule mapped_fastq_filtering:
 
 rule sam_to_original_pe:
     input:
-        sam = "NAMEseq_output/converted_sam/{sample}_AT_only.sam",
-        r1 = "NAMEseq_output/mapped_fastq/{sample}_R1_mapped.fastq",
-        r2 = "NAMEseq_output/mapped_fastq/{sample}_R2_mapped.fastq",
+        sam = OUTPUT_DIR + "converted_sam/{sample}_AT_only.sam",
+        r1 = OUTPUT_DIR + "mapped_fastq/{sample}_R1_mapped.fastq",
+        r2 = OUTPUT_DIR + "mapped_fastq/{sample}_R2_mapped.fastq",
     output:
-        "NAMEseq_output/original_sam/{sample}_original_reads_fwd.sam",
-        "NAMEseq_output/original_sam/{sample}_original_reads_rev.sam"
+        OUTPUT_DIR + "original_sam/{sample}_original_reads_fwd.sam",
+        OUTPUT_DIR + "original_sam/{sample}_original_reads_rev.sam"
     shell:
         """
         python scripts/sam_to_original_pe.py {input.sam} {input.r1} {input.r2} {output[0]} {output[1]} 
         """
 rule samtools_calmd:
     input:
-        "NAMEseq_output/original_sam/{sample}_original_reads_{strand}.sam",
+        OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sam",
         ref_genome = ref_genome,
     output:
-        "NAMEseq_output/original_sam/{sample}_original_reads_{strand}.sorted.bam",
-        "NAMEseq_output/original_sam/{sample}_original_reads_{strand}_baq.sam"
+        OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sorted.bam",
+        OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}_baq.sam"
     threads:
         NUM_THREADS
     shell:
@@ -144,11 +144,11 @@ rule samtools_calmd:
         """
 rule sam_tag_filtering:
     input:
-        fwd = "NAMEseq_output/original_sam/{sample}_original_reads_fwd_baq.sam",
-        rev = "NAMEseq_output/original_sam/{sample}_original_reads_rev_baq.sam"
+        fwd = OUTPUT_DIR + "original_sam/{sample}_original_reads_fwd_baq.sam",
+        rev = OUTPUT_DIR + "original_sam/{sample}_original_reads_rev_baq.sam"
     output:
-        fwd = "NAMEseq_output/filtered_sam/{sample}_original_reads_fwd_baq_filtered.sam",
-        rev = "NAMEseq_output/filtered_sam/{sample}_original_reads_rev_baq_filtered.sam"
+        fwd = OUTPUT_DIR + "filtered_sam/{sample}_original_reads_fwd_baq_filtered.sam",
+        rev = OUTPUT_DIR + "filtered_sam/{sample}_original_reads_rev_baq_filtered.sam"
 
     shell:
         """
@@ -157,9 +157,9 @@ rule sam_tag_filtering:
         """
 rule samtools_sort_index:
     input:
-        "NAMEseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
+        OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
     output:
-        "NAMEseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"
+        OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"
 
     shell:
         """
@@ -168,21 +168,21 @@ rule samtools_sort_index:
         """
 rule igvtools:
     input:
-        bam = "NAMEseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
+        bam = OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
         ref_genome = ref_genome,
     output:
-        "NAMEseq_output/readcount/{sample}_original_reads_{strand}_baq_filtered.wig"
+        OUTPUT_DIR + "readcount/{sample}_original_reads_{strand}_baq_filtered.wig"
     shell:
         """
         igvtools count --bases -w 1 -e 0 {input.bam} {output} {input.ref_genome}
         """
 rule data_proprocess:
     input:
-        fwd = "NAMEseq_output/readcount/{sample}_original_reads_fwd_baq_filtered.wig",
-        rev = "NAMEseq_output/readcount/{sample}_original_reads_rev_baq_filtered.wig",
+        fwd = OUTPUT_DIR + "readcount/{sample}_original_reads_fwd_baq_filtered.wig",
+        rev = OUTPUT_DIR + "readcount/{sample}_original_reads_rev_baq_filtered.wig",
         ref_genome = ref_genome,
     output:
-        "NAMEseq_output/preprocessed_data/{sample}.csv"
+        OUTPUT_DIR + "preprocessed_data/{sample}.csv"
     shell:
         """
         python scripts/readcount_to_csv.py {input.fwd} {input.rev} {input.ref_genome} {output}

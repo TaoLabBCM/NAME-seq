@@ -1,4 +1,4 @@
-name: NT-seq
+name: NAME-seq
 channels:
   - anaconda
   - conda-forge
