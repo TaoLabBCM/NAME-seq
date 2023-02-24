@@ -1,5 +1,5 @@
 # NAME-seq
-This pipeline is designed for data analysis of NAME-seq (Li, X., Guo, S., Cui, Y. et al. NAME-seq: a chemical-based sequencing method for genomic methylome profiling. Genome Biol 23, 122 (2022). https://doi.org/10.1186/s13059-022-02689-9).
+This pipeline is designed for data analysis of NAME-seq (Xuwen Li, Zijian Zhang, Jiekai Yin et al. Quantitative profiling of DNA 6mA at single-base resolution using NAME-seq, 23 November 2022, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-2286301/v1]).
 
 ## Requirements & Installation: 
 Python3 \

@@ -3,7 +3,7 @@ from os.path import join
 INDEX = config["index"]
 INPUT_DIR = config["input_path"]
 OUTPUT_DIR = config["output_path"]
-NUM_THREADS = str(config["num_threads"])
+NUM_THREADS = config["num_threads"]
 SAMPLES = config["basename_list"]
 ref_genome = config["fasta"]
 
