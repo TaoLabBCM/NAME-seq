@@ -1,125 +1,169 @@
-import sys
-from os.path import join
-INDEX = config["index"]
-INPUT_DIR = config["input_path"]
-OUTPUT_DIR = config["output_path"]
-NUM_THREADS = config["num_threads"]
-SAMPLES = config["basename_list"]
-ref_genome = config["fasta"]
-
+SAMPLES = [
+           "mg1655-2h-NT",
+           "mg1655-4h-NT",
+           "mg1655-6h-NT"
+          ]
+Read = ["R1"]
 Strand = ["fwd", "rev"]
-
-ruleorder: dedupe>trimming>fastq_AT_convert>bowtie2_align>sam_to_original_se>samtools_calmd>sam_tag_filtering>samtools_sort_index>igvtools
+ref_genome = "/storage/taowu/home/xuwenl/ref_genome/ecoli_mg1655.fasta"
+bowtie_index = "/storage/taowu/home/xuwenl/ref_genome/bowtie/indexes/mg1655_AT_only/ecoli_mg1655_AT_only"
+# ruleorder: dedupe>trimming>trimming2>fastq_AT_convert>bowtie2_align>mapped_fastq_filtering>sam_to_original_pe>samtools_calmd>sam_tag_filtering>samtools_sort_index>igvtools
 rule all:
     input:
-        expand("NTseq_output/trimmed_fastq/{sample}_trimmed.fastq", sample=SAMPLES),
-        expand("NTseq_output/deduped_fastq/{sample}_dedupe.fastq.gz", sample=SAMPLES),
-        expand("NTseq_output/converted_fastq/{sample}_AT_only.fastq", sample=SAMPLES),
-        expand("NTseq_output/converted_sam/{sample}_AT_only.sam", sample=SAMPLES),
-        expand("NTseq_output/original_sam/{sample}_original_reads_{strand}.sam", sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/original_sam/{sample}_original_reads_{strand}.sorted.bam", sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/original_sam/{sample}_original_reads_{strand}_baq.sam", sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam",sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/readcount/{sample}_original_reads_{strand}_baq_filtered.wig",sample=SAMPLES, strand=Strand),
-        expand("NTseq_output/preprocessed_data/{sample}.csv",sample=SAMPLES)
-
+        expand("results/deduped_fastq/{sample}_{read}_dedupe.fastq.gz", sample=SAMPLES, read=Read),
+        expand("results/trimmed_fastq/{sample}_{read}_trimmed.fastq.gz", sample=SAMPLES, read=Read),
+        # expand("results/trimmed_fastq/{sample}_{read}_trimmed2.fastq", sample=SAMPLES, read=Read),
+        # expand("results/converted_fastq/{sample}_{read}_trimmed2_AT_only.fastq", sample=SAMPLES, read=Read),
+        # expand("results/converted_sam/{sample}_trimmed2_AT_only.sam", sample=SAMPLES),
+        # expand("results/original_sam/{sample}_original_reads_{strand}.sam", sample=SAMPLES, strand=Strand),
+        # expand("results/original_sam/{sample}_original_reads_{strand}.sorted.bam", sample=SAMPLES, strand=Strand),
+        # expand("results/original_sam/{sample}_original_reads_{strand}_baq.sam", sample=SAMPLES, strand=Strand),
+        # expand("results/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam",sample=SAMPLES, strand=Strand),
+        expand("results/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
+        expand("results/readcount/{sample}_original_reads_{strand}_baq_filtered.wig",sample=SAMPLES, strand=Strand),
+        expand("results/preprocessed_data/{sample}_adenine.csv",sample=SAMPLES),
+        expand("results/preprocessed_data/{sample}_cytosine.csv",sample=SAMPLES),
 
 rule dedupe:
     input:
-        r1 = "demo_data/{sample}.fastq.gz"
+        r1 = "raw_fastq/{sample}_R1.fastq.gz"
     output:
-        r1 = "NTseq_output/deduped_fastq/{sample}_dedupe.fastq.gz"
+        r1 = temp("results/deduped_fastq/{sample}_R1_dedupe.fastq.gz"),
     log:
-        "NTseq_output/logs/dedupe/{sample}.log"
+        "logs/dedupe/{sample}.log"
     shell:
         """
-        clumpify.sh in={input.r1} out={output.r1} dedupe 1>{log} 2>&1
+        clumpify.sh in1={input.r1} out={output.r1} dedupe 1>{log} 2>&1
         """
-
+# rule pre_trimming:
+#     input:
+#         r1 = "results/deduped_fastq/{sample}_R1_dedupe.fastq.gz",
+#         r2 = "results/deduped_fastq/{sample}_R2_dedupe.fastq.gz",
+#     output:
+#         r1 = "results/trimmed_fastq/{sample}_R1_pretrimmed.fastq.gz",
+#         r2 = "results/trimmed_fastq/{sample}_R2_pretrimmed.fastq.gz",
+#     log:
+#         "logs/cutadpt/{sample}.log"
+#     params:
+#         TRIM_OPTS = "-m 10 -u -75 -U -75"
+#     threads:
+#         32
+#     shell:
+#         """
+#         cutadapt {params.TRIM_OPTS} -j {threads} -o {output.r1} -p {output.r2} {input.r1} {input.r2} 1>{log}
+#         """
+        
 rule trimming:
     input:
-        r1 = "NTseq_output/deduped_fastq/{sample}_dedupe.fastq.gz"
+        r1 = "results/deduped_fastq/{sample}_R1_dedupe.fastq.gz"
     output:
-        r1 = "NTseq_output/trimmed_fastq/{sample}_trimmed.fastq"
+        r1 = temp("results/trimmed_fastq/{sample}_R1_trimmed.fastq.gz")
     log:
-        "NTseq_output/logs/cutadpt/{sample}.log"
+        "logs/cutadpt/{sample}.log"
     params:
         TRIM_OPTS = "-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -m 10"
     threads:
-        NUM_THREADS
+        32
+    shell:
+        """
+        cutadapt {params.TRIM_OPTS} -j {threads} -o {output.r1} {input.r1}  -u 9 1>{log}
+        """
+
+rule trimming2:
+    input:
+        r1 = "results/trimmed_fastq/{sample}_R1_trimmed.fastq.gz"
+    output:
+        r1 = temp("results/trimmed_fastq/{sample}_R1_trimmed2.fastq")
+    log:
+        "logs/cutadpt2/{sample}.log"
+    params:
+        TRIM_OPTS = "-m 10 -u -9"
+    threads:
+        32
     shell:
         """
         cutadapt {params.TRIM_OPTS} -j {threads} -o {output.r1} {input.r1} 1>{log}
         """
-        
 
 rule fastq_AT_convert:
     input:
-        "NTseq_output/trimmed_fastq/{sample}_trimmed.fastq"
+        "results/trimmed_fastq/{sample}_{read}_trimmed2.fastq"
     output:
-        "NTseq_output/converted_fastq/{sample}_AT_only.fastq"
+        temp("results/converted_fastq/{sample}_{read}_trimmed2_AT_only.fastq")
     shell:
         """
-        python scripts/fastq_to_AT_only.py {input} {output}
+        python3 fastq_to_AT_only.py {input} {output}
         """
 
 rule bowtie2_align:
     input:
-        r1 = "NTseq_output/converted_fastq/{sample}_AT_only.fastq"
-    params:
-        index = INDEX,
+        r1 = "results/converted_fastq/{sample}_R1_trimmed2_AT_only.fastq"
     output:
-        "NTseq_output/converted_sam/{sample}_AT_only.sam"
+        temp("results/converted_sam/{sample}_trimmed2_AT_only.sam")
+    params:
+        bowtie_index
     log:
-        "NTseq_output/logs/bowtie/{sample}.log"
-    threads: NUM_THREADS
+        "logs/bowtie/{sample}.log"
+    threads: 30
     shell:
-        "bowtie2 -x {params.index} -p {threads} -U {input.r1} -S {output} > {log} 2>&1"
+        "bowtie2 -x {params} -p {threads} -U {input.r1} -S {output} > {log} 2>&1"
+
+rule mapped_fastq_filtering:
+    input:
+        sam = "results/converted_sam/{sample}_trimmed2_AT_only.sam",
+        fastq = "results/trimmed_fastq/{sample}_{read}_trimmed2.fastq"
+    output:
+        fastq = temp("results/mapped_fastq/{sample}_{read}_mapped.fastq"),
+        readid = temp('results/mapped_fastq/{sample}_{read}_mapped.readid')
+    shell:
+        """
+        samtools view -F 4 {input.sam} | cut -f 1 | sort | uniq > {output.readid}
+        filterbyname.sh in={input.fastq} out={output.fastq} names={output.readid} include=t
+        """
 
 rule sam_to_original_se:
     input:
-        sam = "NTseq_output/converted_sam/{sample}_AT_only.sam",
-        r1 = "NTseq_output/trimmed_fastq/{sample}_trimmed.fastq"
+        sam = "results/converted_sam/{sample}_trimmed2_AT_only.sam",
+        r1 = "results/mapped_fastq/{sample}_R1_mapped.fastq"
     output:
-        "NTseq_output/original_sam/{sample}_original_reads_fwd.sam",
-        "NTseq_output/original_sam/{sample}_original_reads_rev.sam"
+        temp("results/original_sam/{sample}_original_reads_fwd.sam"),
+        temp("results/original_sam/{sample}_original_reads_rev.sam")
     shell:
         """
-        python scripts/sam_to_original_se.py {input.sam} {input.r1} {output[0]} {output[1]} 
+        python3 sam_to_original_se.py {input.sam} {input.r1} {output[0]} {output[1]} 
         """
 rule samtools_calmd:
     input:
-        "NTseq_output/original_sam/{sample}_original_reads_{strand}.sam",
+        "results/original_sam/{sample}_original_reads_{strand}.sam",
         ref_genome = ref_genome,
     output:
-        "NTseq_output/original_sam/{sample}_original_reads_{strand}.sorted.bam",
-        "NTseq_output/original_sam/{sample}_original_reads_{strand}_baq.sam"
+        temp("results/original_sam/{sample}_original_reads_{strand}.sorted.bam"),
+        temp("results/original_sam/{sample}_original_reads_{strand}_baq.sam")
     threads:
-        NUM_THREADS
+        10
     shell:
         """
         samtools sort {input[0]} > {output[0]}
-        samtools calmd -@ {threads} -Ar {output[0]} {input.ref_genome} > {output[1]} 2>/dev/null
+        samtools calmd -@ {threads} {output[0]} {input.ref_genome} > {output[1]} 2>/dev/null
         """
 rule sam_tag_filtering:
     input:
-        fwd = "NTseq_output/original_sam/{sample}_original_reads_fwd_baq.sam",
-        rev = "NTseq_output/original_sam/{sample}_original_reads_rev_baq.sam"
+        fwd = "results/original_sam/{sample}_original_reads_fwd_baq.sam",
+        rev = "results/original_sam/{sample}_original_reads_rev_baq.sam"
     output:
-        fwd = "NTseq_output/filtered_sam/{sample}_original_reads_fwd_baq_filtered.sam",
-        rev = "NTseq_output/filtered_sam/{sample}_original_reads_rev_baq_filtered.sam"
+        fwd = temp("results/filtered_sam/{sample}_original_reads_fwd_baq_filtered.sam"),
+        rev = temp("results/filtered_sam/{sample}_original_reads_rev_baq_filtered.sam")
 
     shell:
         """
-        python scripts/sam_tag_filtering.py {input.fwd} {output.fwd}
-        python scripts/sam_tag_filtering.py {input.rev} {output.rev}
+        python3 sam_tag_filtering.py {input.fwd} {output.fwd}
+        python3 sam_tag_filtering.py {input.rev} {output.rev}
         """
 rule samtools_sort_index:
     input:
-        "NTseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
+        "results/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
     output:
-        "NTseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"
+        "results/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"
 
     shell:
         """
@@ -128,22 +172,34 @@ rule samtools_sort_index:
         """
 rule igvtools:
     input:
-        bam = "NTseq_output/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
+        bam = "results/filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
         ref_genome = ref_genome,
     output:
-        "NTseq_output/readcount/{sample}_original_reads_{strand}_baq_filtered.wig"
+        "results/readcount/{sample}_original_reads_{strand}_baq_filtered.wig"
     shell:
         """
-        igvtools count --bases -w 1 -e 0 {input.bam} {output} {input.ref_genome}
+        igvtools count --bases -w 1 -e 0 {input.bam} {output} {input.ref_genome} --includeDuplicates
         """
 rule data_proprocess:
     input:
-        fwd = "NTseq_output/readcount/{sample}_original_reads_fwd_baq_filtered.wig",
-        rev = "NTseq_output/readcount/{sample}_original_reads_rev_baq_filtered.wig",
+        fwd = "results/readcount/{sample}_original_reads_fwd_baq_filtered.wig",
+        rev = "results/readcount/{sample}_original_reads_rev_baq_filtered.wig",
         ref_genome = ref_genome,
     output:
-        "NTseq_output/preprocessed_data/{sample}.csv"
+        "results/preprocessed_data/{sample}_adenine.csv"
     shell:
         """
-        python scripts/readcount_to_csv.py {input.fwd} {input.rev} {input.ref_genome} {output}
+        python3 readcount_to_csv.py {input.fwd} {input.rev} {input.ref_genome} {output}
+        """
+        
+rule data_proprocess_cytosine:
+    input:
+        fwd = "results/readcount/{sample}_original_reads_fwd_baq_filtered.wig",
+        rev = "results/readcount/{sample}_original_reads_rev_baq_filtered.wig",
+        ref_genome = ref_genome,
+    output:
+        "results/preprocessed_data/{sample}_cytosine.csv"
+    shell:
+        """
+        python3 readcount_to_csv-cytosine.py {input.fwd} {input.rev} {input.ref_genome} {output}
         """

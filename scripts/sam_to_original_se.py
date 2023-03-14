@@ -40,9 +40,10 @@ with open(converted_sam, 'rt') as fin:
                     flag = int(line_list[1])
                     sam_seq = reads_r1[read_id]
                     # determine read is aligned to forward or reverse complement strand
+
                     if flag == 16 and mapq >= 20:
                         sam_seq = str(Seq(sam_seq).reverse_complement())
-                        # trim reads by cigar hard clipping 
+                        # trim reads by cigar hard clipping
                         if cigar[-1] == 'H':
                             hc_right = int(re.split("([A-Z])",cigar)[-3])
                             sam_seq = sam_seq[0 : -hc_right]
@@ -51,7 +52,6 @@ with open(converted_sam, 'rt') as fin:
                             sam_seq = sam_seq[hc_left:]
                         fout_rev.write(line.replace(line_list[9], sam_seq))
                     elif flag == 0 and mapq >= 20:
-                        # trim reads by cigar hard clipping 
                         if cigar[-1] == 'H':
                             hc_right = int(re.split("([A-Z])",cigar)[-3])
                             sam_seq = sam_seq[0 : -hc_right]

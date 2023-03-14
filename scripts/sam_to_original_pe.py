@@ -68,7 +68,7 @@ with open(converted_sam, 'rt') as fin:
                             hc_left = int(cigar.split('H')[0])
                             sam_seq = sam_seq[hc_left:]
                         fout_rev.write(line.replace(line.split('\t')[9], sam_seq))
-                    elif len(bit_flag) >= 8 and bit_flag[-5] == '1' and bit_flag[-8] == '1' and mapq >= 20:
+                    elif len(bit_flag) >= 8 and bit_flag[-5] == '1' and bit_flag[-8] == '1' and bit_flag[-2] == '1' and mapq >= 20:
                         sam_seq = str(Seq(sam_seq).reverse_complement())
                         # trim reads by cigar hard clipping 
                         if cigar[-1] == 'H':
@@ -78,7 +78,7 @@ with open(converted_sam, 'rt') as fin:
                             hc_left = int(cigar.split('H')[0])
                             sam_seq = sam_seq[hc_left:]
                         fout_fwd.write(line.replace(line.split('\t')[9], sam_seq))
-                    elif len(bit_flag) >= 7 and bit_flag[-6] == '1' and bit_flag[-7] == '1' and mapq >= 20:
+                    elif len(bit_flag) >= 7 and bit_flag[-6] == '1' and bit_flag[-7] == '1' and bit_flag[-2] == '1' and mapq >= 20:
                         # trim reads by cigar hard clipping 
                         if cigar[-1] == 'H':
                             hc_right = int(re.split("([A-Z])",cigar)[-3])
@@ -87,7 +87,7 @@ with open(converted_sam, 'rt') as fin:
                             hc_left = int(cigar.split('H')[0])
                             sam_seq = sam_seq[hc_left:]
                         fout_fwd.write(line.replace(line.split('\t')[9], sam_seq))
-                    elif len(bit_flag) >= 8 and bit_flag[-6] == '1' and bit_flag[-8] == '1' and mapq >= 20:
+                    elif len(bit_flag) >= 8 and bit_flag[-6] == '1' and bit_flag[-8] == '1' and bit_flag[-2] == '1' and mapq >= 20:
                         # trim reads by cigar hard clipping 
                         if cigar[-1] == 'H':
                             hc_right = int(re.split("([A-Z])",cigar)[-3])
