@@ -8,6 +8,11 @@ Usage:
 Options:
     -h --help     Show this screen.
     --version     Show version.
+    --index_name  Name for the Bowtie2 index output
+    -t, --num_threads Num of threads to be used
+    --input_fasta Input reference genome file
+    --index       Built Bowtie2 index location
+    -o, --outpath     Path to store the output files
 
 """
 
