@@ -63,7 +63,7 @@ def collect_FASTQ_files(FILE):
             sys.exit(1)
 
         elif len(collected_files) == 1 and not is_fastq(collected_files[0]):
-            logging.info("SalmonTE assumes that '{}' is a directory, and SalmonTE will search any FASTQ file in the directory.".format(collected_files[0]))
+            logging.info("This script assumes that '{}' is a directory, and will search any FASTQ file in the directory.".format(collected_files[0]))
             collected_files = glob(collected_files[0]+"/*")
 
         black_list = set()
@@ -115,9 +115,13 @@ def collect_FASTQ_files(FILE):
         for file in sorted(paired):
             a = file
             b = list(paired[file])[0]
+            print(paired)
+            print("a:{}".format(a))
+            print("b:{}".format(b))
             if a > b: continue
             trim_a = "_".join(get_basename_noext(a).split("_")[:-1]) + "_R1.{}".format(correct_ext(os.path.basename(a).split('.')[1:]))
             trim_b = "_".join(get_basename_noext(a).split("_")[:-1]) + "_R2.{}".format(correct_ext(os.path.basename(b).split('.')[1:]))
+            print(tmp_dir)
             os.symlink(os.path.abspath(a), os.path.join(tmp_dir, trim_a))
             os.symlink(os.path.abspath(b), os.path.join(tmp_dir, trim_b))
             file_list.append([(trim_a, trim_b)])
@@ -135,6 +139,7 @@ def collect_FASTQ_files(FILE):
     ret = dict()
     ret["paired"] = is_paired
     ret["inpath"] = tmp_dir
+    
     ret["num_fastq"] = int(len(fastq_files) / (is_paired*2)) if is_paired else len(fastq_files)
     ret["file_list"] = file_list
     ret['basename_list'] = basename_list

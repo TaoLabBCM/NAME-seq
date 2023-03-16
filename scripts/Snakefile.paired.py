@@ -29,8 +29,8 @@ rule all:
 
 rule dedupe:
     input:
-        r1 = "raw_fastq/{sample}_R1.fastq.gz",
-        r2 = "raw_fastq/{sample}_R2.fastq.gz",
+        r1 = INPUT_DIR + "/{sample}_R1.fastq.gz",
+        r2 = INPUT_DIR + "/{sample}_R2.fastq.gz",
     output:
         r1 = temp(OUTPUT_DIR + "deduped_fastq/{sample}_R1_dedupe.fastq.gz"),
         r2 = temp(OUTPUT_DIR + "deduped_fastq/{sample}_R2_dedupe.fastq.gz"),
@@ -99,7 +99,7 @@ rule fastq_AT_convert:
         temp(OUTPUT_DIR + "converted_fastq/{sample}_{read}_trimmed2_AT_only.fastq")
     shell:
         """
-        python3 fastq_to_AT_only.py {input} {output}
+        python3 scripts/fastq_to_AT_only.py {input} {output}
         """
 
 rule bowtie2_align:
@@ -139,7 +139,7 @@ rule sam_to_original_pe:
         temp(OUTPUT_DIR + "original_sam/{sample}_original_reads_rev.sam")
     shell:
         """
-        python3 sam_to_original_pe.py {input.sam} {input.r1} {input.r2} {output[0]} {output[1]} 
+        python3 scripts/sam_to_original_pe.py {input.sam} {input.r1} {input.r2} {output[0]} {output[1]} 
         """
 rule samtools_calmd:
     input:
@@ -165,14 +165,15 @@ rule sam_tag_filtering:
 
     shell:
         """
-        python3 sam_tag_filtering.py {input.fwd} {output.fwd}
-        python3 sam_tag_filtering.py {input.rev} {output.rev}
+        python3 scripts/sam_tag_filtering.py {input.fwd} {output.fwd}
+        python3 scripts/sam_tag_filtering.py {input.rev} {output.rev}
         """
 rule samtools_sort_index:
     input:
         OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
     output:
-        temp(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam")
+        temp(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"),
+        temp(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam.bai")
 
     shell:
         """
@@ -198,7 +199,7 @@ rule data_proprocess:
         OUTPUT_DIR + "preprocessed_data/{sample}_adenine.csv"
     shell:
         """
-        python3 readcount_to_csv.py {input.fwd} {input.rev} {input.ref_genome} {output}
+        python3 scripts/readcount_to_csv.py {input.fwd} {input.rev} {input.ref_genome} {output}
         """
         
 rule data_proprocess_cytosine:
@@ -210,5 +211,5 @@ rule data_proprocess_cytosine:
         OUTPUT_DIR + "preprocessed_data/{sample}_cytosine.csv"
     shell:
         """
-        python3 readcount_to_csv-cytosine.py {input.fwd} {input.rev} {input.ref_genome} {output}
+        python3 scripts/readcount_to_csv-cytosine.py {input.fwd} {input.rev} {input.ref_genome} {output}
         """
