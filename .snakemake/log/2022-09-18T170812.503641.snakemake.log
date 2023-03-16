@@ -1,8 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 120 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.paired.py:
-Missing input files for rule sam_to_original_pe:
-    output: NAMEseq_output/original_sam/HPJP26-Input-native_original_reads_fwd.sam, NAMEseq_output/original_sam/HPJP26-Input-native_original_reads_rev.sam
-    wildcards: sample=HPJP26-Input-native
-    affected files:
-        NAMEseq_output/mapped_fastq/HPJP26-Input-native_R1_trimmed.fastq
-        NAMEseq_output/mapped_fastq/HPJP26-Input-native_R2_trimmed.fastq

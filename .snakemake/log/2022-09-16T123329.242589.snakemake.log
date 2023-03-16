@@ -1,3 +1,0 @@
-RuleException in line 52 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single:
-Threads value has to be an integer, float, or a callable.
-  File "/Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single", line 52, in <module>
