@@ -3,14 +3,14 @@
 
 Usage:
     NAMEseq.py index [--index_name=index_name] [--num_threads=numthreads] (--input_fasta=fa_file)
-    NAMEseq.py quant (--index=genome) (--input_fasta=fa_file) [--outpath=outpath] [--num_threads=numthreads] FILE...
+    NAMEseq.py quant (--index=genome) (--input_fasta=fa_file) [--outpath=outpath] [--num_threads=num_threads] FILE...
 
 Options:
     -h --help     Show this screen.
     --version     Show version.
     --index_name=<index_name>  Name for the Bowtie2 index output
-    -t, --num_threads Num of threads to be used
-    --input_fasta Input reference genome file
+    -t, --num_threads=<num_threads> Num of threads to be used
+    --input_fasta=<fa_file> Input reference genome file
     --index=<index>       Built Bowtie2 index location
     -o, --outpath=<outpath>     Path to store the output files
 
