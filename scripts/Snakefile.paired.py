@@ -22,7 +22,7 @@ rule all:
         # expand(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sorted.bam", sample=SAMPLES, strand=Strand),
         # expand(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}_baq.sam", sample=SAMPLES, strand=Strand),
         # expand(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam",sample=SAMPLES, strand=Strand),
-        # expand(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
+        expand(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",sample=SAMPLES, strand=Strand),
         # expand(OUTPUT_DIR + "readcount/{sample}_original_reads_{strand}_baq_filtered.wig",sample=SAMPLES, strand=Strand),
         expand(OUTPUT_DIR + "preprocessed_data/{sample}_adenine.csv",sample=SAMPLES),
         expand(OUTPUT_DIR + "preprocessed_data/{sample}_cytosine.csv",sample=SAMPLES),
@@ -172,8 +172,8 @@ rule samtools_sort_index:
     input:
         OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sam"
     output:
-        temp(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam"),
-        temp(OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam.bai")
+        OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
+        OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam.bai"
 
     shell:
         """
