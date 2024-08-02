@@ -162,7 +162,7 @@ def run_NAMEseq_pipeline(param):
             "num_threads" : param["--num_threads"],
             "basename_list": param["basename_list"],
             "fasta": param["--input_fasta"],
-        },
+        },cores = int(param["--num_threads"]),
         quiet=True
     )
     
