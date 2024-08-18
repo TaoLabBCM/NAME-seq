@@ -1,0 +1,8 @@
+Building DAG of jobs...
+MissingInputException in line 14 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single.py:
+Missing input files for rule all:
+    affected files:
+        results/preprocessed_data/HPJP26-NAME-seq_sampled_R1_adenine.csv
+        results/filtered_sam/HPJP26-NAME-seq_sampled_R1_original_reads_fwd_baq_filtered.sorted.bam
+        results/preprocessed_data/HPJP26-NAME-seq_sampled_R1_cytosine.csv
+        results/filtered_sam/HPJP26-NAME-seq_sampled_R1_original_reads_rev_baq_filtered.sorted.bam

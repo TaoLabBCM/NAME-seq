@@ -1,0 +1,15 @@
+This is cutadapt 4.1 with Python 3.9.0
+Command line parameters: -m 10 -u -9 -j 8 -o /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R1_trimmed2.fastq /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R1_trimmed.fastq.gz
+Processing single-end reads on 8 cores ...
+Finished in 0.92 s (1 µs/read; 63.02 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 969,770
+
+== Read fate breakdown ==
+Reads that were too short:              11,056 (1.1%)
+Reads written (passing filters):       958,714 (98.9%)
+
+Total basepairs processed:    60,469,227 bp
+Total written (filtered):     51,674,321 bp (85.5%)

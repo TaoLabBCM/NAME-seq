@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in line 30 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single.py:
+Missing input files for rule dedupe:
+    output: /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_R1_dedupe.fastq.gz
+    wildcards: sample=HPJP26-NAME-seq_sampled_R1
+    affected files:
+        /var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpvoi0b5g2/HPJP26-NAME-seq_sampled_R1_R1.fastq.gz

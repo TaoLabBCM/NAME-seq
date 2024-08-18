@@ -162,7 +162,7 @@ def run_NAMEseq_pipeline(param):
             "num_threads" : param["--num_threads"],
             "basename_list": param["basename_list"],
             "fasta": param["--input_fasta"],
-        },
+        },cores = int(param["--num_threads"]),
         quiet=True
     )
     
@@ -212,11 +212,11 @@ def run(args):
         logging.info("Collecting FASTQ files...")
         param = {**args, **collect_FASTQ_files(args['FILE'])}
         logging.info("Collected {} FASTQ files.".format(param["num_fastq"]))
-        logging.info("Quantification has been finished.")
+        # logging.info("Quantification has been finished.")
         logging.info("Running Snakemake pipline")
-
+        print(param)
         run_NAMEseq_pipeline(param)
-
+        logging.info("Quantification has been finished.")
     if args['index']:
         build_bowtie_index(args['--input_fasta'], args['--index_name'])
 

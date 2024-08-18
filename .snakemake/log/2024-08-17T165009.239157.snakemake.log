@@ -1,0 +1,62 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count    min threads    max threads
+------------------------  -------  -------------  -------------
+all                             1              1              1
+bowtie2_align                   1              8              8
+data_proprocess                 1              1              1
+data_proprocess_cytosine        1              1              1
+dedupe                          1              1              1
+fastq_AT_convert                2              1              1
+igvtools                        2              1              1
+mapped_fastq_filtering          2              1              1
+sam_tag_filtering               1              1              1
+sam_to_original_pe              1              1              1
+samtools_calmd                  2              8              8
+samtools_sort_index             2              1              1
+trimming                        1              8              8
+trimming2                       1              8              8
+total                          19              1              8
+
+Select jobs to execute...
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R2_dedupe.fastq.gz.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R2_trimmed.fastq.gz.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R1_trimmed.fastq.gz.
+Select jobs to execute...
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/converted_fastq/HPJP26-NAME-seq_sampled_R1_trimmed2_AT_only.fastq.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/converted_fastq/HPJP26-NAME-seq_sampled_R2_trimmed2_AT_only.fastq.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R1_trimmed2.fastq.
+Removing temporary output results/mapped_fastq/HPJP26-NAME-seq_sampled_R1_mapped.readid.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/trimmed_fastq/HPJP26-NAME-seq_sampled_R2_trimmed2.fastq.
+Removing temporary output results/mapped_fastq/HPJP26-NAME-seq_sampled_R2_mapped.readid.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/converted_sam/HPJP26-NAME-seq_sampled_trimmed2_AT_only.sam.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/mapped_fastq/HPJP26-NAME-seq_sampled_R1_mapped.fastq.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/mapped_fastq/HPJP26-NAME-seq_sampled_R2_mapped.fastq.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_rev.sam.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_rev.sorted.bam.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_fwd.sam.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_fwd.sorted.bam.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_fwd_baq.sam.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/original_sam/HPJP26-NAME-seq_sampled_original_reads_rev_baq.sam.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/filtered_sam/HPJP26-NAME-seq_sampled_original_reads_fwd_baq_filtered.sam.
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/filtered_sam/HPJP26-NAME-seq_sampled_original_reads_rev_baq_filtered.sam.
+Select jobs to execute...
+Select jobs to execute...
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/readcount/HPJP26-NAME-seq_sampled_original_reads_fwd_baq_filtered.wig.
+Removing temporary output /Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/readcount/HPJP26-NAME-seq_sampled_original_reads_rev_baq_filtered.wig.
+Select jobs to execute...
+Complete log: .snakemake/log/2024-08-17T165009.239157.snakemake.log

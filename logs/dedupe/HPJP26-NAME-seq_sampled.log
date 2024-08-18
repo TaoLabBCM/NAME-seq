@@ -1,0 +1,42 @@
+/Users/xuwenli/anaconda3/envs/NAME-seq/opt/bbmap-38.96-1//calcmem.sh: line 75: [: -v: unary operator expected
+java -ea -Xmx20G -Xms20G -cp /Users/xuwenli/anaconda3/envs/NAME-seq/opt/bbmap-38.96-1/current/ clump.Clumpify -Xmx20G in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R1.fastq.gz in2=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R2.fastq.gz out=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz out2=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R2_dedupe.fastq.gz dedupe
+Executing clump.Clumpify [-Xmx20G, in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R1.fastq.gz, in2=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R2.fastq.gz, out=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz, out2=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R2_dedupe.fastq.gz, dedupe]
+Version 38.96
+
+Read Estimate:          5186498
+Memory Estimate:        3956 MB
+Memory Available:       16754 MB
+Set groups to 1
+Executing clump.KmerSort1 [in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R1.fastq.gz, in2=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpe5v73y8t/HPJP26-NAME-seq_sampled_R2.fastq.gz, out1=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz, out2=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R2_dedupe.fastq.gz, groups=1, ecco=false, rename=false, shortname=f, unpair=false, repair=false, namesort=false, ow=true, dedupe]
+
+Making comparator.
+Made a comparator with k=31, seed=1, border=1, hashes=4
+Starting cris 0.
+Fetching reads.
+Making fetch threads.
+Starting threads.
+Waiting for threads.
+Fetch time: 	4.711 seconds.
+Closing input stream.
+Combining thread output.
+Combine time: 	0.003 seconds.
+Sorting.
+Sort time: 	0.230 seconds.
+Making clumps.
+Clump time: 	0.341 seconds.
+Deduping.
+Dedupe time: 	0.438 seconds.
+Writing.
+Waiting for writing to complete.
+Write time: 	1.657 seconds.
+Done!
+Time:                         	7.594 seconds.
+Reads Processed:         2000k 	263.36k reads/sec
+Bases Processed:          160m 	21.07m bases/sec
+
+Reads In:              2000000
+Clumps Formed:          846020
+Duplicates Found:         5146
+Reads Out:             1994854
+Bases Out:           159588320
+Total time: 	7.870 seconds.

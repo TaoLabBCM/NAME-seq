@@ -1,0 +1,42 @@
+/Users/xuwenli/anaconda3/envs/NAME-seq/opt/bbmap-38.96-1//calcmem.sh: line 75: [: -v: unary operator expected
+java -ea -Xmx20G -Xms20G -cp /Users/xuwenli/anaconda3/envs/NAME-seq/opt/bbmap-38.96-1/current/ clump.Clumpify -Xmx20G in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpys7uk2fp/HPJP26-NAME-seq_sampled_R1.fastq.gz out=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz dedupe
+Executing clump.Clumpify [-Xmx20G, in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpys7uk2fp/HPJP26-NAME-seq_sampled_R1.fastq.gz, out=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz, dedupe]
+Version 38.96
+
+Read Estimate:          2599249
+Memory Estimate:        1983 MB
+Memory Available:       16754 MB
+Set groups to 1
+Executing clump.KmerSort1 [in1=/var/folders/5n/_kf5f0ss6dg1lcvqxj1c0_hm0000gn/T/tmpys7uk2fp/HPJP26-NAME-seq_sampled_R1.fastq.gz, in2=, out1=/Users/xuwenli/Documents/GitHub/NAME-seq/NAMEseq_output/deduped_fastq/HPJP26-NAME-seq_sampled_R1_dedupe.fastq.gz, out2=, groups=1, ecco=false, rename=false, shortname=f, unpair=false, repair=false, namesort=false, ow=true, dedupe]
+
+Making comparator.
+Made a comparator with k=31, seed=1, border=1, hashes=4
+Starting cris 0.
+Fetching reads.
+Making fetch threads.
+Starting threads.
+Waiting for threads.
+Fetch time: 	1.555 seconds.
+Closing input stream.
+Combining thread output.
+Combine time: 	0.002 seconds.
+Sorting.
+Sort time: 	0.259 seconds.
+Making clumps.
+Clump time: 	0.149 seconds.
+Deduping.
+Dedupe time: 	0.623 seconds.
+Writing.
+Waiting for writing to complete.
+Write time: 	1.029 seconds.
+Done!
+Time:                         	3.836 seconds.
+Reads Processed:         1000k 	260.68k reads/sec
+Bases Processed:        80000k 	20.85m bases/sec
+
+Reads In:              1000000
+Clumps Formed:          846020
+Duplicates Found:        28271
+Reads Out:              971729
+Bases Out:            77738320
+Total time: 	4.179 seconds.

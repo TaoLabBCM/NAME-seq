@@ -148,8 +148,7 @@ rule samtools_calmd:
     output:
         temp(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}.sorted.bam"),
         temp(OUTPUT_DIR + "original_sam/{sample}_original_reads_{strand}_baq.sam")
-    threads:
-        10
+    threads: NUM_THREADS
     shell:
         """
         samtools sort {input[0]} > {output[0]}
@@ -174,10 +173,10 @@ rule samtools_sort_index:
     output:
         OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam",
         OUTPUT_DIR + "filtered_sam/{sample}_original_reads_{strand}_baq_filtered.sorted.bam.bai"
-
+    threads: NUM_THREADS
     shell:
         """
-        samtools sort -@ 20 {input} > {output[0]}
+        samtools sort -@ {threads} {input} > {output[0]}
         samtools index {output[0]}
         """
 rule igvtools:
