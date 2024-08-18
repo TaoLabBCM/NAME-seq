@@ -1,3 +1,0 @@
-NameError in line 105 of /Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single.py:
-name 'bowtie_index' is not defined
-  File "/Users/xuwenli/Documents/GitHub/NAME-seq/scripts/Snakefile.single.py", line 105, in <module>
